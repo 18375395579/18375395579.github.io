@@ -73,6 +73,91 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-MySQL索引" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/24/MySQL%E7%B4%A2%E5%BC%95/" class="article-date">
+  <time class="dt-published" datetime="2022-04-24T12:50:55.000Z" itemprop="datePublished">2022-04-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/04/24/MySQL%E7%B4%A2%E5%BC%95/">MySQL索引</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>索引是帮助MySQL<strong>高效获取数据</strong>的<strong>数据结构</strong>（有序）。</p>
+<h2 id="索引的优缺点"><a href="#索引的优缺点" class="headerlink" title="索引的优缺点"></a>索引的优缺点</h2><p>优点：提高数据检索的效率，降低数据库的IO成本；通过索引对数据进行排序，降低数据排序的成本，降低CPU的消耗。</p>
+<p>缺点：索引列也要占空间；索引大大提高了查询效率，同时却也降低了更新表的速度，对表进行增删改操作时，效率降低。</p>
+<h2 id="索引结构"><a href="#索引结构" class="headerlink" title="索引结构"></a>索引结构</h2><p>B+ Tree索引：最常见的索引类型，大部分引擎都支持B+树索引。</p>
+<p>Hash索引：底层数据结构使用哈希表实现的，只有精确匹配索引猎的查询才有效，<strong>不支持范围查询</strong>。</p>
+<p>R-Tree：空间索引是MyISAM引擎的一个特殊索引类型，主要用于地理空间数据类型，通常使用较少。</p>
+<p>Full-text：全文索引是一种通过建立倒排索引，快速匹配文档的方式。</p>
+<p>二叉树缺点：顺序插入时，会形成一个链表，查询性能大大降低。大数据量情况下，层级较深，检索速度慢。</p>
+<p>可视化页面：<a target="_blank" rel="noopener" href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html">https://www.cs.usfca.edu/~galles/visualization/Algorithms.html</a></p>
+<h2 id="为什么MySQL索引用B-树而不是B树、红黑树-？"><a href="#为什么MySQL索引用B-树而不是B树、红黑树-？" class="headerlink" title="为什么MySQL索引用B+树而不是B树、红黑树 ？"></a>为什么MySQL索引用B+树而不是B树、红黑树 ？</h2><p>相对于二叉树，层级更少，搜索效率高。</p>
+<p>对于b树，无论是叶子节点还是非叶子节点，都会存放数据，这样导致一个磁盘页中存储的键值减少，指针跟着减少，要保存同样大量的数据，只能增加树的高度，导致性能降低。</p>
+<p>相对hash索引，B+树支持范围匹配和排序操作。</p>
+<ol>
+<li><p>B+树只有叶节点存放数据，其余节点用来索引，而B-树是每个索引节点都会有Data域。</p>
+</li>
+<li><p>B+树所有的Data域在叶子节点，并且所有叶子节点之间都有一个链指针。 这样遍历叶子节点就能获得全部数据，这样就能进行区间访问啦。在数据库中基于范围的查询是非常频繁的，而B树不支持这样的遍历操作。</p>
+</li>
+</ol>
+<p>  ​</p>
+<h2 id="索引分类"><a href="#索引分类" class="headerlink" title="索引分类"></a>索引分类</h2><h3 id="数据结构角度"><a href="#数据结构角度" class="headerlink" title="数据结构角度"></a>数据结构角度</h3><p>树索引、Hash索引。</p>
+<h3 id="逻辑角度"><a href="#逻辑角度" class="headerlink" title="逻辑角度"></a>逻辑角度</h3><p>主键索引、唯一索引、常规索引、全文索引、联合索引。</p>
+<h3 id="物理存储角度"><a href="#物理存储角度" class="headerlink" title="物理存储角度"></a>物理存储角度</h3><p><strong>聚簇索引：将数据存储与索引放到了一块，索引结构的叶子节点保存了行数据。</strong></p>
+<p>聚簇索引必须有，而且只有一个。如果存在主键，主键索引就是聚簇索引，如果不存在主键，将使用第一个唯一索引作为聚簇索引。如果都没有，InnoDB会自动生成一个rowid作为隐藏的聚簇索引。</p>
+<p><strong>非聚簇索引（二级索引）：将数据与索引分开存储，索引结构的叶子节点关联的是对应的主键。</strong>                </p>
+<p>非聚簇索引可以存在多个。</p>
+<h2 id="聚簇索引、非聚簇索引和覆盖索引"><a href="#聚簇索引、非聚簇索引和覆盖索引" class="headerlink" title="聚簇索引、非聚簇索引和覆盖索引"></a>聚簇索引、非聚簇索引和覆盖索引</h2><h3 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h3><p>​	聚簇索引就是按照每张表的主键构造一颗B+树，同时叶子节点中存放的就是整张表的行记录数据，也将聚集索引的叶子节点称为数据页。这个特性决定了索引组织表中数据也是索引的一部分，每张表只能拥有一个聚簇索引。</p>
+<p>​	因为聚簇索引决定了表的物理排列顺序，一个表只能有一个物理排列顺序，所以一个表只能建一个聚集索引。聚集索引是一种索引，该索引中键值的逻辑顺序决定了表中相应行的物理序。<br>优点：<br>​	1.数据访问更快，因为聚簇索引将索引和数据保存在同一个B+树中，因此从聚簇索引中获取数据比非聚簇索引更快<br>​	2.聚簇索引对于主键的排序查找和范围查找速度非常快<br>缺点：<br>​	1.插入速度严重依赖于插入顺序，按照主键的顺序插入是最快的方式，否则将会出现页分裂，严重影响性能。因此，对于InnoDB表，我们一般都会<strong>定义一个自增的ID列为主键</strong>。<br>​	2.更新主键的代价很高，因为将会导致被更新的行移动。因此，对于InnoDB表，我们一般定义主键为不可更新。<br>​	3.二级索引访问需要两次索引查找，第一次找到主键值，第二次根据主键值找到行数据。</p>
+<h4 id="使用一个自增的id来作为主键？"><a href="#使用一个自增的id来作为主键？" class="headerlink" title="使用一个自增的id来作为主键？"></a>使用一个自增的id来作为主键？</h4><p>​	InnoDB中表中的数据是直接存储在主键聚簇索引的叶子节点中的，每插入一条记录，其实都是增加一个叶子节点，如果主键是顺序的，只需要把新增的一条记录存储在上一条记录的后面，当页达到最大填充因子的时候，下一跳记录就会写入新的页中，这种情况下，主键页就会近似于被顺序的记录填满。<br>​	若表的主键不是顺序的id，而是无规律数据，比如字符串，InnoDB无法加单的把一行记录插入到索引的最后，而是需要找一个合适的位置（已有数据的中间位置），甚至产生大量的页分裂并且移动大量数据，在寻找合适位置进行插入时，目标页可能不在内存中，这就导致了大量的随机IO操作，影响插入效率。除此之外，大量的页分裂会导致大量的内存碎片。</p>
+<h3 id="非聚簇索引"><a href="#非聚簇索引" class="headerlink" title="非聚簇索引"></a>非聚簇索引</h3><p>将数据和索引分开，叶子节点存储的是行的物理位置 。</p>
+<h3 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h3><p>覆盖索引包含所有需要查询的字段的值。</p>
+<p>具有以下优点：</p>
+<ul>
+<li>索引通常远小于数据行的大小，只读取索引能大大减少数据访问量。</li>
+<li>一些存储引擎（例如 MyISAM）在内存中只缓存索引，而数据依赖于操作系统来缓存。因此，只访问索引可以不使用系统调用（通常比较费时）。</li>
+<li>对于 InnoDB 引擎，若辅助索引能够覆盖查询，则无需访问主索引。</li>
+</ul>
+<h2 id="最左前缀法则"><a href="#最左前缀法则" class="headerlink" title="最左前缀法则"></a>最左前缀法则</h2><p>如果使用联合索引，要遵守最左前缀法则。最左前缀法则指的是查询从索引的最左列开始，并且不跳过索引中的列。和位置无关，即SQL语句中多个字段的顺序。</p>
+<p>如果跳过了最左列，则索引全部失效；如果跳过了中间某一列，则索引将部分失效（从跳过的字段以后）。</p>
+<p>联合索引中，出现范围查询（&gt;，&lt;，between，like），范围查询右侧是索引失效。</p>
+<h2 id="索引失效的情况"><a href="#索引失效的情况" class="headerlink" title="索引失效的情况"></a>索引失效的情况</h2><ol>
+<li>索引列参与表达式运算。</li>
+<li>字符串类型字段使用时，不加单引号。</li>
+<li>使用模糊查询时，如果仅仅是尾部模糊匹配，索引不会失效，如果是头部模糊匹配，索引失效。</li>
+<li>查询条件中有or，那么or前面和后面的字段都需要建立索引。</li>
+<li>MySQL内部优化器会对MySQL语句进行优化，如果优化器估计使用索引比全表扫描更慢，则不使用索引。</li>
+<li>正则表达式不使用索引。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/24/MySQL%E7%B4%A2%E5%BC%95/" data-id="cl2dejafk00022cu7a0679q92" data-title="MySQL索引" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-MySQL存储引擎" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/04/24/MySQL%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" class="article-date">
@@ -125,7 +210,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/24/MySQL%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" data-id="cl2dadlgt0001qku76rkk7yf5" data-title="MySQL存储引擎" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/24/MySQL%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" data-id="cl2dejafi00012cu731sa39g7" data-title="MySQL存储引擎" class="article-share-link">Teilen</a>
       
       
       
@@ -180,7 +265,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92--%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" data-id="cl2dadlgu0002qku7ezb610zw" data-title="动态规划--背包问题" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92--%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" data-id="cl2dejafl00032cu7dcy952tr" data-title="动态规划--背包问题" class="article-share-link">Teilen</a>
       
       
       
@@ -238,7 +323,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/19/%E6%AD%BB%E9%94%81/" data-id="cl2dadlgw0004qku76kkf8g01" data-title="死锁" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/19/%E6%AD%BB%E9%94%81/" data-id="cl2dejafm00042cu721k7e4k7" data-title="死锁" class="article-share-link">Teilen</a>
       
       
       
@@ -295,7 +380,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/19/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" data-id="cl2dadlgv0003qku7ezlrfiif" data-title="进程和线程" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/19/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" data-id="cl2dejafm00052cu781x52sv5" data-title="进程和线程" class="article-share-link">Teilen</a>
       
       
       
@@ -361,7 +446,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/18/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" data-id="cl2dadlg60000qku7fjtcebas" data-title="HTTP状态码" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/18/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" data-id="cl2dejafd00002cu79amxavrt" data-title="HTTP状态码" class="article-share-link">Teilen</a>
       
       
       
@@ -404,6 +489,10 @@
       <ul>
         
           <li>
+            <a href="/2022/04/24/MySQL%E7%B4%A2%E5%BC%95/">MySQL索引</a>
+          </li>
+        
+          <li>
             <a href="/2022/04/24/MySQL%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/">MySQL存储引擎</a>
           </li>
         
@@ -417,10 +506,6 @@
         
           <li>
             <a href="/2022/04/19/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/">进程和线程</a>
-          </li>
-        
-          <li>
-            <a href="/2022/04/18/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/">HTTP状态码</a>
           </li>
         
       </ul>
