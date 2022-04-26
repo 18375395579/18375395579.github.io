@@ -116,13 +116,42 @@
 <p>InnoDB实现了以下俩种类型的行锁：</p>
 <h4 id="共享锁"><a href="#共享锁" class="headerlink" title="共享锁"></a>共享锁</h4><p>允许一个事务去读一行，阻止其他事务获得相同数据集的排他锁。</p>
 <h4 id="排他锁"><a href="#排他锁" class="headerlink" title="排他锁"></a>排他锁</h4><p>允许获取排他锁的事务更新数据，阻止其他事务获得相同数据集的共享锁和排他锁。</p>
+<p>共享锁和共享锁之间是兼容的，只要有排他锁，就是互斥的。</p>
+<p>​</p>
+<p>默认情况下，InnoDB在REPEATABLE READ事务隔离级别运行，InnoDB使用next-key锁进行搜索和索引扫描，以防止幻读。</p>
+<ol>
+<li><p>针对唯一索引进行检索时，对已存在的记录进行等值匹配时，将会自动升级为行锁。</p>
+</li>
+<li><p>InnoDB的行锁是针对索引加锁的，不通过索引条件检索数据，那么InnoDB将对表中的所有记录加锁，此时就会升级为表锁。</p>
+<p>​</p>
+</li>
+</ol>
+<h4 id="间隙锁"><a href="#间隙锁" class="headerlink" title="间隙锁"></a>间隙锁</h4><p>当我们用范围条件而不是相等条件索引数据，并请求共享或排他锁时，InnoDB会给符合条件的已有数据记录的索引项加锁；对于键值在条件范围内但并不存在的记录，叫做“间隙（GAP）”。InnoDB也会对这个“间隙”加锁，这种锁机制就是所谓的间隙锁（Next-Key锁）。  间隙锁的唯一目的是防止其他事务插入间隙。间隙锁可以共存。<br>保证某个间隙内的数据在锁定情况下不会发生任何变化。<strong>当使用主键索引或唯一索引来搜索唯一行的语句时，不需要间隙锁定。</strong>如果，上面语句中id列没有建立索引或者是非唯一索引时，则语句会产生间隙锁。如果，搜索条件里有多个查询条件(即使每个列都有唯一索引)，也是会有间隙锁的。<br>数据可能出现的地方加锁</p>
+<p>危害：<br>间隙锁有一个比较致命的弱点，就是当锁定一个范围键值之后，即使某些不存在的键值也会被无辜的锁定，而造成在锁定的时候无法插入锁定键值范围内的任何数据。在某些场景下这可能会对性能造成很大的危害。 </p>
+<hr>
+<p>黑马程序员和百度说法：</p>
+<p>1、当使用唯一索引来等值查询的语句时, 如果这行数据存在，不产生间隙锁，而是记录锁。</p>
+<p>2、当使用唯一索引来等值查询的语句时, 如果这行数据不存在，会产生间隙锁。</p>
+<p>3、当使用唯一索引来范围查询的语句时，对于满足查询条件但不存在的数据产生间隙(gap)锁，如果查询存在的记录就会产生记录锁，加在一起就是临键锁(next-key)锁。</p>
+<p>4、当使用普通索引不管是锁住单条，还是多条记录，都会产生间隙锁；</p>
+<p>5、在没有索引上不管是锁住单条，还是多条记录，都会产生表锁；</p>
+<p>id      age</p>
+<p>1        1</p>
+<p>4        4</p>
+<p>7        7</p>
+<p><strong>等值查询id &#x3D; 5，因为查询记录不存在，所以无法加记录锁，但这里会存在一个（1,7）的间隙锁。（间隙锁是左开右开的）</strong></p>
+<p><strong>等值查询age &#x3D; 4，因为age是普通索引，所以会产生临键(next-key)锁(1,4]和(4,7]。（左开右闭原则）</strong></p>
+<p><strong>范围查询id &gt; 4，那么这里就会存在一个(4,+supernum]的临键(next-key)锁。</strong></p>
+<p><strong>范围查询id &gt;&#x3D; 4，那么这里就会存在一个[4,+supernum]的临键(next-key)锁。</strong></p>
+<p><strong>可以说临键锁是行锁与间隙锁的并集。</strong></p>
+<hr>
 </li>
 </ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/25/MySQL/%E9%94%81/" data-id="cl2e5py3p00078ou78a47b89g" data-title="锁" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/25/MySQL/%E9%94%81/" data-id="cl2g52jmt0007h8u74vbz9ob3" data-title="锁" class="article-share-link">Teilen</a>
       
       
       
@@ -177,7 +206,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/25/MySQL/SQL%E4%BC%98%E5%8C%96%E5%92%8C%E6%9F%A5%E8%AF%A2%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" data-id="cl2e5py3o00068ou75rj0b6oj" data-title="SQL优化和查询性能优化" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/25/MySQL/SQL%E4%BC%98%E5%8C%96%E5%92%8C%E6%9F%A5%E8%AF%A2%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" data-id="cl2g52jms0006h8u7cmuy1f5d" data-title="SQL优化和查询性能优化" class="article-share-link">Teilen</a>
       
       
       
@@ -262,7 +291,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/24/MySQL/MySQL%E7%B4%A2%E5%BC%95/" data-id="cl2e5py3k00058ou7c4msfuql" data-title="MySQL索引" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/24/MySQL/MySQL%E7%B4%A2%E5%BC%95/" data-id="cl2g52jmq0005h8u7bvxqbdar" data-title="MySQL索引" class="article-share-link">Teilen</a>
       
       
       
@@ -326,7 +355,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/24/MySQL/MySQL%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" data-id="cl2e5py3j00048ou70p1m7ck9" data-title="MySQL存储引擎" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/24/MySQL/MySQL%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" data-id="cl2g52jmp0004h8u79wkpcdai" data-title="MySQL存储引擎" class="article-share-link">Teilen</a>
       
       
       
@@ -381,7 +410,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92--%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" data-id="cl2e5py3g00018ou73o8008p1" data-title="动态规划--背包问题" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92--%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" data-id="cl2g52jml0001h8u7bmuc2vpy" data-title="动态规划--背包问题" class="article-share-link">Teilen</a>
       
       
       
@@ -439,7 +468,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/19/%E6%AD%BB%E9%94%81/" data-id="cl2e5py3h00028ou7gil8bqj7" data-title="死锁" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/19/%E6%AD%BB%E9%94%81/" data-id="cl2g52jmm0002h8u72lnx3umf" data-title="死锁" class="article-share-link">Teilen</a>
       
       
       
@@ -496,7 +525,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/19/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" data-id="cl2e5py3i00038ou79xzr4dwt" data-title="进程和线程" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/19/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" data-id="cl2g52jmn0003h8u74p9z8t06" data-title="进程和线程" class="article-share-link">Teilen</a>
       
       
       
@@ -562,7 +591,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/18/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" data-id="cl2e5py3b00008ou7006yhmew" data-title="HTTP状态码" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/18/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" data-id="cl2g52jmg0000h8u73l6n9gl8" data-title="HTTP状态码" class="article-share-link">Teilen</a>
       
       
       
