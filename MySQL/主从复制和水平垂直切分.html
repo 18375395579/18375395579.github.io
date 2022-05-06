@@ -7,14 +7,14 @@
   <title>主从复制和水平垂直切分 | czxblog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="主从复制概述主从复制，是用来建立一个和主数据库完全一样的数据库环境，称为从数据库，主数据库一般是准实时的业务数据库。将主数据库的DDL和DML操作通过二进制文件传到从数据库中，然后在从库上对这些日志重新执行，从而使得从库和主库的数据保持同步。 主从复制的作用？ 做数据的热备，作为后备数据库，主数据库服务器故障后，可切换到从数据库继续工作，避免数据丢失。 架构的扩展。业务量越来越大,I&#x2F;O">
-<meta property="og:type" content="article">
+<meta property="og:type" content="website">
 <meta property="og:title" content="主从复制和水平垂直切分">
-<meta property="og:url" content="https://github.com/18375395579/18375395579.github.io/2022/04/26/MySQL/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%92%8C%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%88%87%E5%88%86/index.html">
+<meta property="og:url" content="https://github.com/18375395579/18375395579.github.io/MySQL/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%92%8C%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%88%87%E5%88%86.html">
 <meta property="og:site_name" content="czxblog">
 <meta property="og:description" content="主从复制概述主从复制，是用来建立一个和主数据库完全一样的数据库环境，称为从数据库，主数据库一般是准实时的业务数据库。将主数据库的DDL和DML操作通过二进制文件传到从数据库中，然后在从库上对这些日志重新执行，从而使得从库和主库的数据保持同步。 主从复制的作用？ 做数据的热备，作为后备数据库，主数据库服务器故障后，可切换到从数据库继续工作，避免数据丢失。 架构的扩展。业务量越来越大,I&#x2F;O">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-04-26T13:38:07.000Z">
-<meta property="article:modified_time" content="2022-04-26T14:16:14.906Z">
+<meta property="article:modified_time" content="2022-05-06T11:15:15.150Z">
 <meta property="article:author" content="程中信">
 <meta name="twitter:card" content="summary">
   
@@ -73,9 +73,9 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-MySQL/主从复制和水平垂直切分" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="page-" class="h-entry article article-type-page" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2022/04/26/MySQL/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%92%8C%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%88%87%E5%88%86/" class="article-date">
+    <a href="/MySQL/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%92%8C%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%88%87%E5%88%86.html" class="article-date">
   <time class="dt-published" datetime="2022-04-26T13:38:07.000Z" itemprop="datePublished">2022-04-26</time>
 </a>
     
@@ -135,7 +135,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/26/MySQL/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%92%8C%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%88%87%E5%88%86/" data-id="cl2uccdwi000gf0u755dz8x0f" data-title="主从复制和水平垂直切分" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/18375395579/18375395579.github.io/MySQL/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%92%8C%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%88%87%E5%88%86.html" data-id="cl2uccdwa000af0u7aqj85wid" data-title="主从复制和水平垂直切分" class="article-share-link">Teilen</a>
       
       
       
@@ -143,25 +143,6 @@
   </div>
   
     
-<nav id="article-nav">
-  
-    <a href="/2022/05/02/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Neuer</strong>
-      <div class="article-nav-title">
-        
-          消息队列
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2022/04/26/MySQL/MVCC/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
-      <div class="article-nav-title">MVCC</div>
-    </a>
-  
-</nav>
-
   
 </article>
 
