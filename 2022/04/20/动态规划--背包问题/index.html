@@ -1,253 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>动态规划--背包问题 | czxblog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="01背包问题有n件物品和一个能装最大重量为w的背包，每件物品都有自己的价值，第i件价值为value[i]，每件物品最多只能使用一次，问将哪些物品装入背包可以让背包重量不超且物品价值总和最大？ 在使用二维数组解决01背包问题时，状态转移方程为：$$dp[i][j] &#x3D; Math.max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i])$$">
-<meta property="og:type" content="article">
-<meta property="og:title" content="动态规划--背包问题">
-<meta property="og:url" content="https://github.com/18375395579/18375395579.github.io/2022/04/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92--%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/index.html">
-<meta property="og:site_name" content="czxblog">
-<meta property="og:description" content="01背包问题有n件物品和一个能装最大重量为w的背包，每件物品都有自己的价值，第i件价值为value[i]，每件物品最多只能使用一次，问将哪些物品装入背包可以让背包重量不超且物品价值总和最大？ 在使用二维数组解决01背包问题时，状态转移方程为：$$dp[i][j] &#x3D; Math.max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i])$$">
-<meta property="og:locale">
-<meta property="article:published_time" content="2022-04-20T02:26:30.000Z">
-<meta property="article:modified_time" content="2022-04-20T02:56:01.282Z">
-<meta property="article:author" content="程中信">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="czxblog" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-<meta name="generator" content="Hexo 6.1.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">czxblog</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://github.com/18375395579/18375395579.github.io"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-动态规划--背包问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/04/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92--%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" class="article-date">
-  <time class="dt-published" datetime="2022-04-20T02:26:30.000Z" itemprop="datePublished">2022-04-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      动态规划--背包问题
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="01背包问题"><a href="#01背包问题" class="headerlink" title="01背包问题"></a>01背包问题</h2><p>有n件物品和一个能装最大重量为w的背包，每件物品都有自己的价值，第i件价值为value[i]，每件物品最多只能使用一次，问将哪些物品装入背包可以让背包重量不超且物品价值总和最大？</p>
-<p>在使用二维数组解决01背包问题时，状态转移方程为：<br>$$<br>dp[i][j] &#x3D; Math.max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i])<br>$$</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; weight.size(); i++) &#123; <span class="comment">// 遍历物品</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt;= w; j++) &#123; <span class="comment">// 遍历背包容量</span></span><br><span class="line">        <span class="keyword">if</span>(j &lt; weight[i])&#123;</span><br><span class="line">          dp[i][j] = dp[i - <span class="number">1</span>][j];</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">          dp[i][j] = max(dp[i - <span class="number">1</span>][j], dp[i - <span class="number">1</span>][j - weight[i]] + value[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>从状态转移方程可以看出dp[i - 1]这一层可以直接利用，拷贝到当前的dp[i]层上。</p>
-<p>即状态转移方程可以写成：<br>$$<br>dp[i][j] &#x3D; Math.max(dp[i ][j], dp[i ][j - weight[i]] + value[i])<br>$$<br>到这里，就可以看出，可以只使用一个一维数组来优化了。<br>$$<br>dp[j] &#x3D; Math.max(dp[[j], dp[j - weight[i]] + value[i])<br>$$<br>这里要注意！！！用一维数组优化的时候，背包容量要反着来遍历，目的是为了保证物品只被使用一次。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; weight.size(); i++) &#123; <span class="comment">// 遍历物品</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> w; j &gt;= weight[i]; j--) &#123; <span class="comment">// 遍历背包容量</span></span><br><span class="line">        dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+{% extends '_layout.swig' %}
+{% import '_macro/post.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
 
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-<h2 id="完全背包问题"><a href="#完全背包问题" class="headerlink" title="完全背包问题"></a>完全背包问题</h2><p>有n件物品和一个能装最大重量为w的背包，每件物品都有自己的价值，第i件价值为value[i]，每件物品可以使用多次，问将哪些物品装入背包可以让背包重量不超且物品价值总和最大？</p>
-<p>01背包内部的背包容量是从大到小遍历，目的是让物品只使用一次，而完全背包问题物品可以使用多次，则应该是从小到大遍历。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先遍历物品，再遍历背包</span></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; weight.size(); i++) &#123; <span class="comment">// 遍历物品</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> weight[i]; j &lt;= bagWeight ; j++) &#123; <span class="comment">// 遍历背包容量</span></span><br><span class="line">        dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+{% block page_class %}page-post-detail{% endblock %}
 
 
-<p>使用二维数组时，先遍历物品或者先遍历背包容量都可以，但是使用一维数组的话，只能先遍历物品，不能先遍历背包容量。</p>
+{% block content %}
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/18375395579/18375395579.github.io/2022/04/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92--%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" data-id="cl2ucsbr30007ecu768bd7yjc" data-title="动态规划--背包问题" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2022/04/24/MySQL%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Neuer</strong>
-      <div class="article-nav-title">
-        
-          MySQL存储引擎
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2022/04/19/%E6%AD%BB%E9%94%81/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
-      <div class="article-nav-title">死锁</div>
-    </a>
-  
-</nav>
+  <div id="posts" class="posts-expand">
+    {{ post_template.render(page) }}
 
-  
-</article>
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li></ul>
+    <div class="post-spread">
+      {% if theme.jiathis %}
+        {% include '_partials/share/jiathis.swig' %}
+      {% elseif theme.baidushare %}
+        {% include '_partials/share/baidushare.swig' %}
+      {% elseif theme.add_this_id %}
+        {% include '_partials/share/add-this.swig' %}
+      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
+        {% include '_partials/share/duoshuo_share.swig' %}
+      {% endif %}
     </div>
   </div>
 
+{% endblock %}
 
-  
-    
+{% block sidebar %}
+  {{ sidebar_template.render(true) }}
+{% endblock %}
 
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2022/05/06/MySQL/index/">MySQL</a>
-          </li>
-        
-          <li>
-            <a href="/2022/05/02/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a>
-          </li>
-        
-          <li>
-            <a href="/2022/04/26/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%92%8C%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%88%87%E5%88%86/">主从复制和水平垂直切分</a>
-          </li>
-        
-          <li>
-            <a href="/2022/04/26/MVCC/">MVCC</a>
-          </li>
-        
-          <li>
-            <a href="/2022/04/25/%E9%94%81/">锁</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2022 程中信<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
-</html>
+{% block script_extra %}
+  {% include '_scripts/pages/post-details.swig' %}
+{% endblock %}
