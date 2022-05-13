@@ -81,15 +81,15 @@
 
 
 
-<meta name="description" content="进程进程是系统进行资源分配和调度的基本单位，是系统中并发执行的单位。进程控制块（PCB）描述进程的基本信息和运行状态，创建进程和撤销进程，都是指对PCB的操作。进程是系统中并发执行的单位。 线程线程是CPU调度和分派本单位，是进程的一个实体，同一个进程里的线程切换是不会引起进程的切换，从一个进程里的线程切换到另一个进程里的线程会引起进程切换。 协程协程比线程更轻量级，和一个进程拥有多个线程一样，一">
+<meta name="description" content="进程进程是系统进行资源分配和调度的基本单位，是系统中并发执行的单位。进程控制块（PCB）描述进程的基本信息和运行状态，创建进程和撤销进程，都是指对PCB的操作。进程是系统中并发执行的单位。 线程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="进程和线程">
 <meta property="og:url" content="https://github.com/18375395579/18375395579.github.io/2022/04/19/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/index.html">
 <meta property="og:site_name" content="czxblog">
-<meta property="og:description" content="进程进程是系统进行资源分配和调度的基本单位，是系统中并发执行的单位。进程控制块（PCB）描述进程的基本信息和运行状态，创建进程和撤销进程，都是指对PCB的操作。进程是系统中并发执行的单位。 线程线程是CPU调度和分派本单位，是进程的一个实体，同一个进程里的线程切换是不会引起进程的切换，从一个进程里的线程切换到另一个进程里的线程会引起进程切换。 协程协程比线程更轻量级，和一个进程拥有多个线程一样，一">
+<meta property="og:description" content="进程进程是系统进行资源分配和调度的基本单位，是系统中并发执行的单位。进程控制块（PCB）描述进程的基本信息和运行状态，创建进程和撤销进程，都是指对PCB的操作。进程是系统中并发执行的单位。 线程">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-04-19T03:20:37.000Z">
-<meta property="article:modified_time" content="2022-05-07T10:32:12.215Z">
+<meta property="article:modified_time" content="2022-05-13T11:42:55.256Z">
 <meta property="article:author" content="程中信">
 <meta name="twitter:card" content="summary">
 
@@ -359,7 +359,9 @@
 
       
         <h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p>进程是系统进行资源分配和调度的基本单位，是系统中并发执行的单位。进程控制块（PCB）描述进程的基本信息和运行状态，创建进程和撤销进程，都是指对PCB的操作。进程是系统中并发执行的单位。</p>
-<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程是CPU调度和分派本单位，是进程的一个实体，同一个进程里的线程切换是不会引起进程的切换，从一个进程里的线程切换到另一个进程里的线程会引起进程切换。</p>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><span id="more"></span>
+
+<p>线程是CPU调度和分派本单位，是进程的一个实体，同一个进程里的线程切换是不会引起进程的切换，从一个进程里的线程切换到另一个进程里的线程会引起进程切换。</p>
 <h2 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h2><p>协程比线程更轻量级，和一个进程拥有多个线程一样，一个线程也可以拥有多个协程，协程不被操作系统内核管理，完全由程序来控制。</p>
 <h2 id="进程和线程的区别"><a href="#进程和线程的区别" class="headerlink" title="进程和线程的区别"></a>进程和线程的区别</h2><ol>
 <li>进程是资源分配的基本单位，而线程不拥有资源线程可以访问属于进程的资源；</li>

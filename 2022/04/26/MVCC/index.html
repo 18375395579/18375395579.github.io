@@ -81,15 +81,15 @@
 
 
 
-<meta name="description" content="基本概念当前读：读取的是记录的最新版本，读取时还要保证其他并发事务不能修改当前记录，会对读取的记录进行加锁。像select … lock in share mode（共享锁）、select … for update、insert、delete（排他锁）操作都是当前读。 快照读：简单的select（不加锁）就是快照读，快照读读的是记录数据的可见版本，有可能是历史数据，不加锁，是非阻塞读。  Read">
+<meta name="description" content="基本概念当前读：读取的是记录的最新版本，读取时还要保证其他并发事务不能修改当前记录，会对读取的记录进行加锁。像select … lock in share mode（共享锁）、select … for update、insert、delete（排他锁）操作都是当前读。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MVCC">
 <meta property="og:url" content="https://github.com/18375395579/18375395579.github.io/2022/04/26/MVCC/index.html">
 <meta property="og:site_name" content="czxblog">
-<meta property="og:description" content="基本概念当前读：读取的是记录的最新版本，读取时还要保证其他并发事务不能修改当前记录，会对读取的记录进行加锁。像select … lock in share mode（共享锁）、select … for update、insert、delete（排他锁）操作都是当前读。 快照读：简单的select（不加锁）就是快照读，快照读读的是记录数据的可见版本，有可能是历史数据，不加锁，是非阻塞读。  Read">
+<meta property="og:description" content="基本概念当前读：读取的是记录的最新版本，读取时还要保证其他并发事务不能修改当前记录，会对读取的记录进行加锁。像select … lock in share mode（共享锁）、select … for update、insert、delete（排他锁）操作都是当前读。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-04-26T12:49:39.000Z">
-<meta property="article:modified_time" content="2022-05-07T10:46:18.222Z">
+<meta property="article:modified_time" content="2022-05-13T11:39:06.003Z">
 <meta property="article:author" content="程中信">
 <meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
@@ -360,6 +360,8 @@
 
       
         <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p><strong>当前读</strong>：读取的是记录的最新版本，读取时还要保证其他并发事务不能修改当前记录，会对读取的记录进行加锁。像select … lock in share mode（共享锁）、select … for update、insert、delete（排他锁）操作都是当前读。</p>
+<span id="more"></span>
+
 <p><strong>快照读</strong>：简单的select（不加锁）就是快照读，快照读读的是记录数据的可见版本，有可能是历史数据，不加锁，是非阻塞读。</p>
 <ol>
 <li>Read Committed：每次select都生成一个快照读。</li>

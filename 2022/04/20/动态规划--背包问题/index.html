@@ -89,7 +89,7 @@
 <meta property="og:description" content="01背包问题有n件物品和一个能装最大重量为w的背包，每件物品都有自己的价值，第i件价值为value[i]，每件物品最多只能使用一次，问将哪些物品装入背包可以让背包重量不超且物品价值总和最大？ 在使用二维数组解决01背包问题时，状态转移方程为：$$dp[i][j] &#x3D; Math.max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i])$$">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-04-20T02:26:30.000Z">
-<meta property="article:modified_time" content="2022-05-07T10:32:38.301Z">
+<meta property="article:modified_time" content="2022-05-13T11:41:55.615Z">
 <meta property="article:author" content="程中信">
 <meta name="twitter:card" content="summary">
 
@@ -361,6 +361,8 @@
         <h2 id="01背包问题"><a href="#01背包问题" class="headerlink" title="01背包问题"></a>01背包问题</h2><p>有n件物品和一个能装最大重量为w的背包，每件物品都有自己的价值，第i件价值为value[i]，每件物品最多只能使用一次，问将哪些物品装入背包可以让背包重量不超且物品价值总和最大？</p>
 <p>在使用二维数组解决01背包问题时，状态转移方程为：<br>$$<br>dp[i][j] &#x3D; Math.max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i])<br>$$</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; weight.size(); i++) &#123; <span class="comment">// 遍历物品</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt;= w; j++) &#123; <span class="comment">// 遍历背包容量</span></span><br><span class="line">        <span class="keyword">if</span>(j &lt; weight[i])&#123;</span><br><span class="line">          dp[i][j] = dp[i - <span class="number">1</span>][j];</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">          dp[i][j] = max(dp[i - <span class="number">1</span>][j], dp[i - <span class="number">1</span>][j - weight[i]] + value[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
 
 <p>从状态转移方程可以看出dp[i - 1]这一层可以直接利用，拷贝到当前的dp[i]层上。</p>
 <p>即状态转移方程可以写成：<br>$$<br>dp[i][j] &#x3D; Math.max(dp[i ][j], dp[i ][j - weight[i]] + value[i])<br>$$<br>到这里，就可以看出，可以只使用一个一维数组来优化了。<br>$$<br>dp[j] &#x3D; Math.max(dp[[j], dp[j - weight[i]] + value[i])<br>$$<br>这里要注意！！！用一维数组优化的时候，背包容量要反着来遍历，目的是为了保证物品只被使用一次。</p>

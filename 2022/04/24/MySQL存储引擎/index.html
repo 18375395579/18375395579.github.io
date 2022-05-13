@@ -89,7 +89,7 @@
 <meta property="og:description" content="简介大体来说，MySQL可以分为Server和存储引擎俩部分。 Server层包括：连接器、查询缓存、分析器、优化器、执行器等，涵盖了MySQL的大多数核心服务功能。 存储引擎就是存储数据、建立索引、更新&#x2F;查询数据等技术的实现方式。存储引擎是基于表的，而不是基于库的。其架构是插件式的，从MySQL5.5版本开始默认的存储引擎是InnoDB，但是在建表时可以通过 ENGINE &#x3D;">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-04-24T12:02:51.000Z">
-<meta property="article:modified_time" content="2022-05-06T11:21:39.792Z">
+<meta property="article:modified_time" content="2022-05-13T11:40:55.770Z">
 <meta property="article:author" content="程中信">
 <meta name="twitter:card" content="summary">
 
@@ -361,6 +361,8 @@
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>大体来说，MySQL可以分为Server和存储引擎俩部分。</p>
 <p>Server层包括：连接器、查询缓存、分析器、优化器、执行器等，涵盖了MySQL的大多数核心服务功能。</p>
 <p>存储引擎就是存储数据、建立索引、更新&#x2F;查询数据等技术的实现方式。存储引擎是基于表的，而不是基于库的。其架构是插件式的，从MySQL5.5版本开始默认的存储引擎是InnoDB，但是在建表时可以通过 ENGINE &#x3D; xxx 来指定存储引擎。不同存储引擎的表数据存取方式不同，支持的功能也不同。</p>
+<span id="more"></span>
+
 <h2 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h2><p>是一种兼顾高可靠性和高性能的通用存储引擎，是MySQL 默认的事务型存储引擎，只有在需要它不支持的特性时，才考虑使用其它存储引擎。</p>
 <p>实现了四个标准的隔离级别，默认级别是可重复读（REPEATABLE READ）。在可重复读隔离级别下，通过多版本并发控制（MVCC）+ Next-Key Locking 防止幻影读。</p>
 <p>主索引是聚簇索引，在索引中保存了数据，从而避免直接读取磁盘，因此对查询性能有很大的提升。</p>
